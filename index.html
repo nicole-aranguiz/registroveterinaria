@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Clínica Veterinaria</title>
+</head>
+<body>
+
+    <h1>Registro de Atención Veterinaria</h1>
+
+    <form id="formMascota">
+        <input type="text" id="nombre" placeholder="Nombre de la mascota">
+        <input type="text" id="especie" placeholder="Especie">
+        <input type="text" id="propietario" placeholder="Propietario">
+        <input type="number" id="edad" placeholder="Edad">
+        <button type="submit">Registrar</button>
+    </form>
+
+    <div id="mensajeError" style="color: red;"></div>
+
+    <div>
+        <p>Total: <span id="total">0</span></p>
+        <p>Pendientes: <span id="pendientes">0</span></p>
+        <p>Atendidas: <span id="atendidas">0</span></p>
+    </div>
+
+    <div id="listaMascotas"></div>
+
+    <script src="script.js"></script>
+</body>
+</html>
