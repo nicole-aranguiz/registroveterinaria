@@ -6,12 +6,20 @@ let filtroActual = 'todos';
 const formMascota = document.querySelector('#formMascota');
 const mensajeError = document.querySelector('#mensajeError');
 const listaMascotas = document.querySelector('#listaMascotas');
+const btnBuscar = document.querySelector('#btnBuscar'); // Nuevo botón de búsqueda
 
-// Evento submit
+// Evento submit del formulario
 formMascota.addEventListener('submit', (e) => {
     e.preventDefault();
     registrarMascota();
 });
+
+// Evento click del botón buscar
+if (btnBuscar) {
+    btnBuscar.addEventListener('click', () => {
+        mostrarMascotas();
+    });
+}
 
 // 1. Validar Formulario
 function validarFormulario() {
@@ -45,18 +53,19 @@ function registrarMascota() {
     }
 }
 
-// 3. Filtrar por estado
+// 3. Filtrar por estado (Ej: botones de "Todos", "Pendientes", "Atendidos")
 function filtrarMascotas(tipo) {
     filtroActual = tipo;
     mostrarMascotas();
 }
 
-// 4. Motor de Renderizado (Incluye Buscador, Filtros y Botones)
+// 4. Motor de Renderizado
 function mostrarMascotas() {
     listaMascotas.innerHTML = '';
-    // Obtener valor del buscador (asegúrate de tener un input con id="buscador")
-    const buscador = document.querySelector('#buscador');
-    const terminoBusqueda = buscador ? buscador.value.toLowerCase() : '';
+    
+    // Capturamos el valor del buscador al momento de ejecutar la función
+    const inputBuscador = document.querySelector('#buscador');
+    const terminoBusqueda = inputBuscador ? inputBuscador.value.toLowerCase() : '';
     
     // Filtro combinado: Estado + Buscador
     let mascotasFiltradas = mascotas.filter(m => {
@@ -72,7 +81,6 @@ function mostrarMascotas() {
         const div = document.createElement('div');
         div.classList.add('tarjeta-mascota');
         
-        // Estilo condicional si está atendido
         if (mascota.atendido) div.classList.add('atendida');
         
         div.innerHTML = `
@@ -108,7 +116,7 @@ function editarMascota(index) {
     }
 }
 
-// 7. Eliminar Mascota (La función que solicitaste)
+// 7. Eliminar Mascota
 function eliminarMascota(index) {
     if (confirm("¿Estás segura de que quieres eliminar a " + mascotas[index].nombre + "?")) {
         mascotas.splice(index, 1);

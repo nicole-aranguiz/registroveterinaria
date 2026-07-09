@@ -21,14 +21,14 @@
 
     <!-- Filtros y Ordenamiento -->
     <div class="filtros">
-    <!-- Filtros previos -->
-    <button onclick="filtrarMascotas('todos')">Todos</button>
-    <button onclick="filtrarMascotas('pendientes')">Pendientes</button>
-    <button onclick="filtrarMascotas('atendidas')">Atendidas</button>
-    <button onclick="ordenarPorNombre()" style="background-color: var(--color-primario);">Ordenar A-Z</button>
-    
-    <!-- Nuevo buscador -->
-    <input type="text" id="buscador" placeholder="Buscar por nombre..." oninput="filtrarMascotas(filtroActual)" style="width: 200px; margin-top: 0;">
+        <button onclick="filtrarMascotas('todos')">Todos</button>
+        <button onclick="filtrarMascotas('pendientes')">Pendientes</button>
+        <button onclick="filtrarMascotas('atendidas')">Atendidas</button>
+        <button onclick="ordenarPorNombre()" style="background-color: var(--color-primario);">Ordenar A-Z</button>
+        
+        <!-- Buscador con botón -->
+        <input type="text" id="buscador" placeholder="Buscar por nombre..." style="width: 200px; margin-top: 0;">
+        <button id="btnBuscar">Buscar</button>
     </div>
 
     <!-- Estadísticas -->
