@@ -99,13 +99,18 @@ function eliminarMascota(index) {
 // función mostrarMascotas para incluir el botón "Eliminar"
 function mostrarMascotas() {
     listaMascotas.innerHTML = '';
+    const terminoBusqueda = document.querySelector('#buscador').value.toLowerCase();
     
-    let mascotasFiltradas = mascotas;
-    if (filtroActual === 'pendientes') {
-        mascotasFiltradas = mascotas.filter(m => !m.atendido);
-    } else if (filtroActual === 'atendidas') {
-        mascotasFiltradas = mascotas.filter(m => m.atendido);
-    }
+    // Filtramos primero por estado y luego por nombre
+    let mascotasFiltradas = mascotas.filter(m => {
+        const coincideEstado = (filtroActual === 'todos') || 
+                               (filtroActual === 'pendientes' && !m.atendido) || 
+                               (filtroActual === 'atendidas' && m.atendido);
+        
+        const coincideNombre = m.nombre.toLowerCase().includes(terminoBusqueda);
+        
+        return coincideEstado && coincideNombre;
+    });
 
     mascotasFiltradas.forEach((mascota) => {
         const indexOriginal = mascotas.indexOf(mascota);
@@ -113,15 +118,14 @@ function mostrarMascotas() {
         div.classList.add('tarjeta-mascota');
         
         div.innerHTML = `
-        <p><strong>${mascota.nombre}</strong> - ${mascota.especie} - Propietario: ${mascota.propietario} - Edad: ${mascota.edad} - Estado: ${mascota.atendido ? 'Atendido' : 'Pendiente'}</p>
-        ${!mascota.atendido ? `<button onclick="cambiarEstado(${indexOriginal})">Atender</button>` : ''}
-        <button onclick="editarMascota(${indexOriginal})" style="background-color: #9c27b0;">Editar</button>
-        <button onclick="eliminarMascota(${indexOriginal})" style="background-color: #d32f2f;">Eliminar</button>
-`;
+            <p><strong>${mascota.nombre}</strong> - ${mascota.especie} - Propietario: ${mascota.propietario} - Edad: ${mascota.edad} - Estado: ${mascota.atendido ? 'Atendido' : 'Pendiente'}</p>
+            ${!mascota.atendido ? `<button onclick="cambiarEstado(${indexOriginal})">Atender</button>' : ''}
+            <button onclick="editarMascota(${indexOriginal})" style="background-color: var(--color-secundario);">Editar</button>
+            <button onclick="eliminarMascota(${indexOriginal})" style="background-color: #d32f2f;">Eliminar</button>
+        `;
         listaMascotas.appendChild(div);
     });
 }
-
 // Función para editar datos
 function editarMascota(index) {
     const mascota = mascotas[index];
