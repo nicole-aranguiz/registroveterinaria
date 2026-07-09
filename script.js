@@ -143,3 +143,10 @@ function editarMascota(index) {
         actualizarEstadisticas();
     }
 }
+
+function ordenarPorNombre() {
+    mascotas.sort((a, b) => {
+        return a.nombre.toLowerCase().localeCompare(b.nombre.toLowerCase());
+    });
+    mostrarMascotas();
+}
