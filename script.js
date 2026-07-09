@@ -113,10 +113,33 @@ function mostrarMascotas() {
         div.classList.add('tarjeta-mascota');
         
         div.innerHTML = `
-            <p><strong>${mascota.nombre}</strong> - ${mascota.especie} - Propietario: ${mascota.propietario} - Edad: ${mascota.edad} - Estado: ${mascota.atendido ? 'Atendido' : 'Pendiente'}</p>
-            ${!mascota.atendido ? `<button onclick="cambiarEstado(${indexOriginal})">Atender</button>` : ''}
-            <button onclick="eliminarMascota(${indexOriginal})" style="background-color: #d32f2f;">Eliminar</button>
-        `;
+        <p><strong>${mascota.nombre}</strong> - ${mascota.especie} - Propietario: ${mascota.propietario} - Edad: ${mascota.edad} - Estado: ${mascota.atendido ? 'Atendido' : 'Pendiente'}</p>
+        ${!mascota.atendido ? `<button onclick="cambiarEstado(${indexOriginal})">Atender</button>` : ''}
+        <button onclick="editarMascota(${indexOriginal})" style="background-color: #9c27b0;">Editar</button>
+        <button onclick="eliminarMascota(${indexOriginal})" style="background-color: #d32f2f;">Eliminar</button>
+`;
         listaMascotas.appendChild(div);
     });
+}
+
+// Función para editar datos
+function editarMascota(index) {
+    const mascota = mascotas[index];
+    const nuevoNombre = prompt("Editar nombre:", mascota.nombre);
+    const nuevaEspecie = prompt("Editar especie:", mascota.especie);
+    const nuevoPropietario = prompt("Editar propietario:", mascota.propietario);
+    const nuevaEdad = prompt("Editar edad:", mascota.edad);
+
+    
+    if (nuevoNombre && nuevaEspecie && nuevoPropietario && nuevaEdad > 0) {
+        mascotas[index] = {
+            ...mascota,
+            nombre: nuevoNombre,
+            especie: nuevaEspecie,
+            propietario: nuevoPropietario,
+            edad: parseInt(nuevaEdad)
+        };
+        mostrarMascotas();
+        actualizarEstadisticas();
+    }
 }

@@ -172,3 +172,13 @@ button:active {
 .tarjeta-mascota button:last-child:hover {
     background-color: #b71c1c;
 }
+
+/* Estilo para el botón de editar */
+.tarjeta-mascota button:nth-last-child(2) {
+    background-color: var(--color-secundario);
+    margin-left: 5px;
+}
+
+.tarjeta-mascota button:nth-last-child(2):hover {
+    background-color: #7b1fa2;
+}
