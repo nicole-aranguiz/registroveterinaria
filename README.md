@@ -69,11 +69,13 @@ function actualizarEstadisticas() {
 
 
 4. ¿La utilizó completamente o realizó modificaciones?
+
+
 Realice modificaciones constantes. La IA sirvio como base, pero ajuste la implementación para
 asegurar que los nombres de los elementos en el HTML coincidieran con mis propios estilos CSS y
 también para integrar las funciones adicionales (como la edición de registros) que decidi añadir.
 
-6. ¿Por qué considera importante revisar las respuestas generadas por la IA antes de
+5. ¿Por qué considera importante revisar las respuestas generadas por la IA antes de
 utilizarlas?
 
 Es fundamental porque el código generado puede no alinearse perfectamente con la estructura especifica
