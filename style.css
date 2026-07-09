@@ -149,3 +149,16 @@ button:active {
     text-align: center;
     font-weight: bold;
 }
+
+.filtros {
+    margin: 20px 0;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.filtros button {
+    background-color: var(--color-secundario);
+    width: auto;
+    padding: 10px 20px;
+}

@@ -1,9 +1,10 @@
 let mascotas = [];
+let filtroActual = 'todos'; // Variable para controlar el filtro
 
 // Selección de elementos
-const formMascota = document.getElementById('formMascota');
-const mensajeError = document.getElementById('mensajeError');
-const listaMascotas = document.getElementById('listaMascotas');
+const formMascota = document.querySelector('#formMascota');
+const mensajeError = document.querySelector('#mensajeError');
+const listaMascotas = document.querySelector('#listaMascotas');
 
 // Evento submit
 formMascota.addEventListener('submit', (e) => {
@@ -12,12 +13,12 @@ formMascota.addEventListener('submit', (e) => {
 });
 
 function validarFormulario() {
-    const nombre = document.getElementById('nombre').value.trim();
-    const especie = document.getElementById('especie').value.trim();
-    const propietario = document.getElementById('propietario').value.trim();
-    const edad = document.getElementById('edad').value;
+    const nombre = document.querySelector('#nombre').value.trim();
+    const especie = document.querySelector('#especie').value.trim();
+    const propietario = document.querySelector('#propietario').value.trim();
+    const edad = parseInt(document.querySelector('#edad').value);
 
-    if (nombre.length < 2 || especie === "" || propietario === "" || edad <= 0) {
+    if (nombre.length < 2 || especie === "" || propietario === "" || isNaN(edad) || edad <= 0) {
         mensajeError.textContent = "Error: Todos los campos son obligatorios, el nombre debe tener al menos 2 caracteres y la edad debe ser positiva.";
         return false;
     }
@@ -28,10 +29,10 @@ function validarFormulario() {
 function registrarMascota() {
     if (validarFormulario()) {
         const nuevaMascota = {
-            nombre: document.getElementById('nombre').value.trim(),
-            especie: document.getElementById('especie').value.trim(),
-            propietario: document.getElementById('propietario').value.trim(),
-            edad: parseInt(document.getElementById('edad').value),
+            nombre: document.querySelector('#nombre').value.trim(),
+            especie: document.querySelector('#especie').value.trim(),
+            propietario: document.querySelector('#propietario').value.trim(),
+            edad: parseInt(document.querySelector('#edad').value),
             atendido: false
         };
         mascotas.push(nuevaMascota);
@@ -41,13 +42,31 @@ function registrarMascota() {
     }
 }
 
+// Nueva función para el filtro
+function filtrarMascotas(tipo) {
+    filtroActual = tipo;
+    mostrarMascotas();
+}
+
 function mostrarMascotas() {
     listaMascotas.innerHTML = '';
-    mascotas.forEach((mascota, index) => {
+    
+    // Lógica de filtrado
+    let mascotasFiltradas = mascotas;
+    if (filtroActual === 'pendientes') {
+        mascotasFiltradas = mascotas.filter(m => !m.atendido);
+    } else if (filtroActual === 'atendidas') {
+        mascotasFiltradas = mascotas.filter(m => m.atendido);
+    }
+
+    mascotasFiltradas.forEach((mascota) => {
+        const indexOriginal = mascotas.indexOf(mascota);
         const div = document.createElement('div');
+        div.classList.add('tarjeta-mascota');
+        
         div.innerHTML = `
             <p><strong>${mascota.nombre}</strong> - ${mascota.especie} - Propietario: ${mascota.propietario} - Edad: ${mascota.edad} - Estado: ${mascota.atendido ? 'Atendido' : 'Pendiente'}</p>
-            ${!mascota.atendido ? `<button onclick="cambiarEstado(${index})">Atender</button>` : ''}
+            ${!mascota.atendido ? `<button onclick="cambiarEstado(${indexOriginal})">Atender</button>` : ''}
         `;
         listaMascotas.appendChild(div);
     });
