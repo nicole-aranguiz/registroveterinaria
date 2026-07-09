@@ -1,0 +1,151 @@
+/* --- Paleta de Colores --- */
+:root {
+    --color-primario: #e91e63; /* Rosado fuerte para botones */
+    --color-secundario: #9c27b0; /* Morado para acentos y bordes */
+    --fondo: #fce4ec; /* Rosado muy pálido para el fondo */
+    --texto: #4a148c; /* Morado oscuro para el texto principal */
+    --tarjeta-bg: #ffffff; /* Blanco para las tarjetas */
+    --error: #d32f2f; /* Rojo para errores */
+}
+
+/* --- Estilos Globales --- */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background-color: var(--fondo);
+    color: var(--texto);
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Títulos */
+h1, h2 {
+    color: var(--color-secundario);
+}
+
+/* --- Contenedor del Formulario --- */
+#formMascota {
+    background: var(--tarjeta-bg);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 6px 10px rgba(0,0,0,0.15); /* Sombra más suave */
+    width: 100%;
+    max-width: 420px;
+    margin-bottom: 30px;
+    border: 1px solid #e0e0e0;
+}
+
+/* Inputs */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 2px solid #e0e0e0; /* Borde inicial más grueso */
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 1em;
+    transition: border-color 0.3s; /* Transición suave al enfocar */
+}
+
+input:focus {
+    outline: none;
+    border-color: var(--color-secundario); /* Borde morado al enfocar */
+}
+
+/* Botón principal (Registrar) */
+button {
+    background-color: var(--color-primario);
+    color: white;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 1.1em;
+    font-weight: bold;
+    margin-top: 10px;
+    transition: background-color 0.3s, transform 0.1s;
+}
+
+button:hover {
+    background-color: #c2185b; /* Un rosado un poco más oscuro al pasar el mouse */
+}
+
+button:active {
+    transform: scale(0.98); /* Efecto de "clic" */
+}
+
+/* --- Estilo para las tarjetas de mascotas (Resultados) --- */
+.tarjeta-mascota {
+    background: var(--tarjeta-bg);
+    padding: 20px;
+    margin: 15px 0;
+    border-radius: 10px;
+    border-left: 6px solid var(--color-secundario); /* Borde izquierdo morado */
+    box-shadow: 0 3px 6px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 420px;
+    transition: transform 0.2s;
+}
+
+.tarjeta-mascota:hover {
+    transform: translateY(-5px); /* Levanta ligeramente la tarjeta al pasar el mouse */
+}
+
+/* Botón de acción (Atender) dentro de la tarjeta */
+.tarjeta-mascota button {
+    background-color: var(--color-secundario);
+    width: auto; /* Botón más pequeño */
+    padding: 8px 15px;
+    margin-top: 10px;
+    font-size: 0.9em;
+}
+
+.tarjeta-mascota button:hover {
+    background-color: #7b1fa2; /* Morado más oscuro */
+}
+
+/* Textos clave dentro de la tarjeta */
+.tarjeta-mascota strong {
+    color: var(--color-primario);
+}
+
+/* --- Estilo para Estadísticas --- */
+.estadisticas {
+    display: flex;
+    gap: 25px;
+    margin-bottom: 30px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.stat-box {
+    background: var(--tarjeta-bg);
+    padding: 15px 25px;
+    border-radius: 8px;
+    border: 2px solid var(--color-secundario);
+    text-align: center;
+}
+
+.stat-box h3 {
+    margin: 0 0 5px 0;
+    font-size: 1em;
+    color: var(--color-secundario);
+}
+
+.stat-box p {
+    margin: 0;
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--color-primario);
+}
+
+/* --- Mensaje de Error --- */
+#mensajeError {
+    color: var(--error);
+    font-size: 0.9em;
+    margin-top: 15px;
+    text-align: center;
+    font-weight: bold;
+}

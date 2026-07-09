@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css"> <!-- Vinculamos tu nuevo CSS -->
     <title>Clínica Veterinaria</title>
 </head>
 <body>
@@ -9,19 +10,30 @@
     <h1>Registro de Atención Veterinaria</h1>
 
     <form id="formMascota">
-        <input type="text" id="nombre" placeholder="Nombre de la mascota">
-        <input type="text" id="especie" placeholder="Especie">
-        <input type="text" id="propietario" placeholder="Propietario">
-        <input type="number" id="edad" placeholder="Edad">
+        <input type="text" id="nombre" placeholder="Nombre de la mascota" required>
+        <input type="text" id="especie" placeholder="Especie" required>
+        <input type="text" id="propietario" placeholder="Propietario" required>
+        <input type="number" id="edad" placeholder="Edad" required>
         <button type="submit">Registrar</button>
     </form>
 
-    <div id="mensajeError" style="color: red;"></div>
+    <div id="mensajeError"></div>
 
-    <div>
-        <p>Total: <span id="total">0</span></p>
-        <p>Pendientes: <span id="pendientes">0</span></p>
-        <p>Atendidas: <span id="atendidas">0</span></p>
+    <!-- Estructura para el nuevo diseño de estadísticas -->
+    <h2>Estadísticas</h2>
+    <div class="estadisticas">
+        <div class="stat-box">
+            <h3>Total</h3>
+            <p id="total">0</p>
+        </div>
+        <div class="stat-box">
+            <h3>Pendientes</h3>
+            <p id="pendientes">0</p>
+        </div>
+        <div class="stat-box">
+            <h3>Atendidas</h3>
+            <p id="atendidas">0</p>
+        </div>
     </div>
 
     <div id="listaMascotas"></div>
