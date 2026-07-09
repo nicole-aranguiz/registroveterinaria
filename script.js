@@ -99,27 +99,30 @@ function eliminarMascota(index) {
 // función mostrarMascotas para incluir el botón "Eliminar"
 function mostrarMascotas() {
     listaMascotas.innerHTML = '';
+    // Obtenemos el valor actual del buscador en cada renderizado
     const terminoBusqueda = document.querySelector('#buscador').value.toLowerCase();
     
-    // Filtramos primero por estado y luego por nombre
+    // Filtramos combinando ambos criterios
     let mascotasFiltradas = mascotas.filter(m => {
-        const coincideEstado = (filtroActual === 'todos') || 
-                               (filtroActual === 'pendientes' && !m.atendido) || 
-                               (filtroActual === 'atendidas' && m.atendido);
+        // Criterio 1: Filtro de estado
+        const cumpleEstado = (filtroActual === 'todos') || 
+                             (filtroActual === 'pendientes' && !m.atendido) || 
+                             (filtroActual === 'atendidas' && m.atendido);
         
-        const coincideNombre = m.nombre.toLowerCase().includes(terminoBusqueda);
+        // Criterio 2: Buscador por nombre
+        const cumpleNombre = m.nombre.toLowerCase().includes(terminoBusqueda);
         
-        return coincideEstado && coincideNombre;
+        return cumpleEstado && cumpleNombre;
     });
 
+    // Renderizamos los resultados
     mascotasFiltradas.forEach((mascota) => {
         const indexOriginal = mascotas.indexOf(mascota);
         const div = document.createElement('div');
         div.classList.add('tarjeta-mascota');
-        
         div.innerHTML = `
             <p><strong>${mascota.nombre}</strong> - ${mascota.especie} - Propietario: ${mascota.propietario} - Edad: ${mascota.edad} - Estado: ${mascota.atendido ? 'Atendido' : 'Pendiente'}</p>
-            ${!mascota.atendido ? `<button onclick="cambiarEstado(${indexOriginal})">Atender</button>' : ''}
+            ${!mascota.atendido ? `<button onclick="cambiarEstado(${indexOriginal})">Atender</button>` : ''}
             <button onclick="editarMascota(${indexOriginal})" style="background-color: var(--color-secundario);">Editar</button>
             <button onclick="eliminarMascota(${indexOriginal})" style="background-color: #d32f2f;">Eliminar</button>
         `;
