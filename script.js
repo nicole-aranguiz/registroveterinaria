@@ -1,5 +1,6 @@
+// Arreglo principal y estado de filtro
 let mascotas = [];
-let filtroActual = 'todos'; // Variable para controlar el filtro
+let filtroActual = 'todos';
 
 // Selección de elementos
 const formMascota = document.querySelector('#formMascota');
@@ -12,6 +13,7 @@ formMascota.addEventListener('submit', (e) => {
     registrarMascota();
 });
 
+// 1. Validar Formulario
 function validarFormulario() {
     const nombre = document.querySelector('#nombre').value.trim();
     const especie = document.querySelector('#especie').value.trim();
@@ -26,6 +28,7 @@ function validarFormulario() {
     return true;
 }
 
+// 2. Registrar Mascota
 function registrarMascota() {
     if (validarFormulario()) {
         const nuevaMascota = {
@@ -42,118 +45,95 @@ function registrarMascota() {
     }
 }
 
-// Nueva función para el filtro
+// 3. Filtrar por estado
 function filtrarMascotas(tipo) {
     filtroActual = tipo;
     mostrarMascotas();
 }
 
+// 4. Motor de Renderizado (Incluye Buscador, Filtros y Botones)
 function mostrarMascotas() {
     listaMascotas.innerHTML = '';
+    // Obtener valor del buscador (asegúrate de tener un input con id="buscador")
+    const buscador = document.querySelector('#buscador');
+    const terminoBusqueda = buscador ? buscador.value.toLowerCase() : '';
     
-    // Lógica de filtrado
-    let mascotasFiltradas = mascotas;
-    if (filtroActual === 'pendientes') {
-        mascotasFiltradas = mascotas.filter(m => !m.atendido);
-    } else if (filtroActual === 'atendidas') {
-        mascotasFiltradas = mascotas.filter(m => m.atendido);
-    }
+    // Filtro combinado: Estado + Buscador
+    let mascotasFiltradas = mascotas.filter(m => {
+        const cumpleEstado = (filtroActual === 'todos') || 
+                             (filtroActual === 'pendientes' && !m.atendido) || 
+                             (filtroActual === 'atendidas' && m.atendido);
+        const cumpleNombre = m.nombre.toLowerCase().includes(terminoBusqueda);
+        return cumpleEstado && cumpleNombre;
+    });
 
     mascotasFiltradas.forEach((mascota) => {
         const indexOriginal = mascotas.indexOf(mascota);
         const div = document.createElement('div');
         div.classList.add('tarjeta-mascota');
         
+        // Estilo condicional si está atendido
+        if (mascota.atendido) div.classList.add('atendida');
+        
         div.innerHTML = `
-            <p><strong>${mascota.nombre}</strong> - ${mascota.especie} - Propietario: ${mascota.propietario} - Edad: ${mascota.edad} - Estado: ${mascota.atendido ? 'Atendido' : 'Pendiente'}</p>
+            <p><strong>${mascota.nombre}</strong> - ${mascota.especie} | Propietario: ${mascota.propietario} | Edad: ${mascota.edad}</p>
+            <p>Estado: ${mascota.atendido ? 'Atendido' : 'Pendiente'}</p>
             ${!mascota.atendido ? `<button onclick="cambiarEstado(${indexOriginal})">Atender</button>` : ''}
+            <button onclick="editarMascota(${indexOriginal})">Editar</button>
+            <button onclick="eliminarMascota(${indexOriginal})" style="background-color: #d32f2f; color: white;">Eliminar</button>
         `;
         listaMascotas.appendChild(div);
     });
 }
 
+// 5. Cambiar Estado
 function cambiarEstado(index) {
     mascotas[index].atendido = true;
     mostrarMascotas();
     actualizarEstadisticas();
 }
 
-function actualizarEstadisticas() {
-    const total = mascotas.length;
-    const atendidas = mascotas.filter(m => m.atendido).length;
-    const pendientes = total - atendidas;
-
-    document.getElementById('total').textContent = total;
-    document.getElementById('pendientes').textContent = pendientes;
-    document.getElementById('atendidas').textContent = atendidas;
-}
-
-
-function eliminarMascota(index) {
-    // Eliminamos 1 elemento en la posición 'index'
-    mascotas.splice(index, 1); 
-    mostrarMascotas();
-    actualizarEstadisticas();
-}
-
-// función mostrarMascotas para incluir el botón "Eliminar"
-function mostrarMascotas() {
-    listaMascotas.innerHTML = '';
-    // Obtenemos el valor actual del buscador en cada renderizado
-    const terminoBusqueda = document.querySelector('#buscador').value.toLowerCase();
-    
-    // Filtramos combinando ambos criterios
-    let mascotasFiltradas = mascotas.filter(m => {
-        // Criterio 1: Filtro de estado
-        const cumpleEstado = (filtroActual === 'todos') || 
-                             (filtroActual === 'pendientes' && !m.atendido) || 
-                             (filtroActual === 'atendidas' && m.atendido);
-        
-        // Criterio 2: Buscador por nombre
-        const cumpleNombre = m.nombre.toLowerCase().includes(terminoBusqueda);
-        
-        return cumpleEstado && cumpleNombre;
-    });
-
-    // Renderizamos los resultados
-    mascotasFiltradas.forEach((mascota) => {
-        const indexOriginal = mascotas.indexOf(mascota);
-        const div = document.createElement('div');
-        div.classList.add('tarjeta-mascota');
-        div.innerHTML = `
-            <p><strong>${mascota.nombre}</strong> - ${mascota.especie} - Propietario: ${mascota.propietario} - Edad: ${mascota.edad} - Estado: ${mascota.atendido ? 'Atendido' : 'Pendiente'}</p>
-            ${!mascota.atendido ? `<button onclick="cambiarEstado(${indexOriginal})">Atender</button>` : ''}
-            <button onclick="editarMascota(${indexOriginal})" style="background-color: var(--color-secundario);">Editar</button>
-            <button onclick="eliminarMascota(${indexOriginal})" style="background-color: #d32f2f;">Eliminar</button>
-        `;
-        listaMascotas.appendChild(div);
-    });
-}
-// Función para editar datos
+// 6. Editar Mascota
 function editarMascota(index) {
     const mascota = mascotas[index];
     const nuevoNombre = prompt("Editar nombre:", mascota.nombre);
     const nuevaEspecie = prompt("Editar especie:", mascota.especie);
     const nuevoPropietario = prompt("Editar propietario:", mascota.propietario);
     const nuevaEdad = prompt("Editar edad:", mascota.edad);
-
     
     if (nuevoNombre && nuevaEspecie && nuevoPropietario && nuevaEdad > 0) {
-        mascotas[index] = {
-            ...mascota,
-            nombre: nuevoNombre,
-            especie: nuevaEspecie,
-            propietario: nuevoPropietario,
-            edad: parseInt(nuevaEdad)
-        };
+        mascotas[index] = { ...mascota, nombre: nuevoNombre, especie: nuevaEspecie, propietario: nuevoPropietario, edad: parseInt(nuevaEdad) };
         mostrarMascotas();
         actualizarEstadisticas();
     }
 }
 
+// 7. Eliminar Mascota (La función que solicitaste)
+function eliminarMascota(index) {
+    if (confirm("¿Estás segura de que quieres eliminar a " + mascotas[index].nombre + "?")) {
+        mascotas.splice(index, 1);
+        mostrarMascotas();
+        actualizarEstadisticas();
+    }
+}
+
+// 8. Actualizar Estadísticas
+function actualizarEstadisticas() {
+    const total = mascotas.length;
+    const atendidas = mascotas.filter(m => m.atendido).length;
+    const pendientes = total - atendidas;
+
+    const elTotal = document.getElementById('total');
+    const elPendientes = document.getElementById('pendientes');
+    const elAtendidas = document.getElementById('atendidas');
+
+    if(elTotal) elTotal.textContent = total;
+    if(elPendientes) elPendientes.textContent = pendientes;
+    if(elAtendidas) elAtendidas.textContent = atendidas;
+}
+
+// 9. Ordenar
 function ordenarPorNombre() {
-    mascotas.sort((a, b) => {
-        return a.nombre.toLowerCase().localeCompare(b.nombre.toLowerCase());
-    });
+    mascotas.sort((a, b) => a.nombre.toLowerCase().localeCompare(b.nombre.toLowerCase()));
     mostrarMascotas();
 }
