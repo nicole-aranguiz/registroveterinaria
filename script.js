@@ -87,3 +87,36 @@ function actualizarEstadisticas() {
     document.getElementById('pendientes').textContent = pendientes;
     document.getElementById('atendidas').textContent = atendidas;
 }
+
+
+function eliminarMascota(index) {
+    // Eliminamos 1 elemento en la posición 'index'
+    mascotas.splice(index, 1); 
+    mostrarMascotas();
+    actualizarEstadisticas();
+}
+
+// función mostrarMascotas para incluir el botón "Eliminar"
+function mostrarMascotas() {
+    listaMascotas.innerHTML = '';
+    
+    let mascotasFiltradas = mascotas;
+    if (filtroActual === 'pendientes') {
+        mascotasFiltradas = mascotas.filter(m => !m.atendido);
+    } else if (filtroActual === 'atendidas') {
+        mascotasFiltradas = mascotas.filter(m => m.atendido);
+    }
+
+    mascotasFiltradas.forEach((mascota) => {
+        const indexOriginal = mascotas.indexOf(mascota);
+        const div = document.createElement('div');
+        div.classList.add('tarjeta-mascota');
+        
+        div.innerHTML = `
+            <p><strong>${mascota.nombre}</strong> - ${mascota.especie} - Propietario: ${mascota.propietario} - Edad: ${mascota.edad} - Estado: ${mascota.atendido ? 'Atendido' : 'Pendiente'}</p>
+            ${!mascota.atendido ? `<button onclick="cambiarEstado(${indexOriginal})">Atender</button>` : ''}
+            <button onclick="eliminarMascota(${indexOriginal})" style="background-color: #d32f2f;">Eliminar</button>
+        `;
+        listaMascotas.appendChild(div);
+    });
+}

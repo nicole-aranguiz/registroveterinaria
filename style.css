@@ -162,3 +162,13 @@ button:active {
     width: auto;
     padding: 10px 20px;
 }
+
+/* Estilo específico para el botón de eliminar */
+.tarjeta-mascota button:last-child {
+    background-color: var(--error);
+    margin-left: 5px;
+}
+
+.tarjeta-mascota button:last-child:hover {
+    background-color: #b71c1c;
+}
